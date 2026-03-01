@@ -27,6 +27,17 @@ impl InformationBuilder {
         self.loc = &self.loc + &(&self.precision * &pick)
     }
 
+    pub fn write_distr(&mut self, distr: &[Frac], pick: usize) {
+        assert!(pick < distr.len());
+
+        let accum: Frac = distr
+            .iter()
+            .take(pick)
+            .fold(Frac::zero(), |accum, x| &accum + x);
+        self.loc = &self.loc + &(&self.precision * &accum);
+        self.precision = &self.precision * &distr[pick];
+    }
+
     pub fn write_to_stream(&self, stream: &mut impl Write) -> Result<(), io::Error> {
         println!("Loc: {:?}\nPerc: {:?}", self.loc, self.precision);
 

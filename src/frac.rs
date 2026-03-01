@@ -118,6 +118,14 @@ impl Frac {
             &other.numerator * &self.denominator,
         )
     }
+    pub fn from_usize(numerator: usize, denominator: usize) -> Self {
+        let mut r = Self {
+            numerator: numerator.into(),
+            denominator: denominator.into(),
+        };
+        r.simplify();
+        r
+    }
     pub fn inverse(x: BigUint) -> Self {
         Self {
             numerator: 1usize.into(),
