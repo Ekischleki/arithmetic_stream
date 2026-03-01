@@ -39,7 +39,7 @@ impl InformationBuilder {
     }
 
     pub fn write_to_stream(&self, stream: &mut impl Write) -> Result<(), io::Error> {
-        println!("Loc: {:?}\nPerc: {:?}", self.loc, self.precision);
+        //println!("Loc: {:?}\nPerc: {:?}", self.loc, self.precision);
 
         let mut bit_builder = BitBuilder::new(stream);
         let mut loc = Frac::zero();

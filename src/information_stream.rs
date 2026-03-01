@@ -82,7 +82,7 @@ impl<S: Read> InformationStream<S> {
 
             //If both upper and lower bounds lie within the same value, we can be certain that we don't need anymore bits and can go on with rescaling.
             if &k1 == &k2 {
-                println!("Size: {:?}\nmax: {:?}\nloc:{:?}", size, distr[k1], self.loc);
+                //println!("Size: {:?}\nmax: {:?}\nloc:{:?}", size, distr[k1], self.loc);
                 break k1;
             }
             //We need more precision
