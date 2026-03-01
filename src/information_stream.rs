@@ -26,10 +26,10 @@ impl<S: Read> InformationStream<S> {
             self.stream_end = true;
             false
         }) {
-            println!("Read 1");
+            //println!("Read 1");
             Frac::one()
         } else {
-            println!("Read 0");
+            //println!("Read 0");
 
             Frac::zero()
         } * &self.bit_weight;

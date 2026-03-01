@@ -49,10 +49,10 @@ impl InformationBuilder {
         while loc < self.loc {
             if &loc + &precision >= upper_bound {
                 //We can't overshoot because we won't be able to go back
-                println!("Wrote 0");
+                //println!("Wrote 0");
                 bit_builder.write_bit(false)?;
             } else {
-                println!("Wrote 1");
+                //println!("Wrote 1");
                 bit_builder.write_bit(true)?;
                 loc = &loc + &precision;
             }
