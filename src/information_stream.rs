@@ -64,7 +64,6 @@ impl<S: Read> InformationStream<S> {
         };
 
         //Rescale bounds by max
-
         self.bit_weight = &self.bit_weight * &max;
         self.loc = &(&self.loc - &(&precision * &res)) * &max;
 
