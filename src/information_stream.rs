@@ -6,6 +6,7 @@ use crate::{bitstream::Bitstream, frac::Frac};
 
 pub struct InformationStream<S: Read> {
     bitstream: Bitstream<S>,
+    read_bits: BigUint,
     loc: Frac,
     bit_weight: Frac,
     stream_end: bool,
@@ -14,11 +15,16 @@ pub struct InformationStream<S: Read> {
 impl<S: Read> InformationStream<S> {
     pub fn new(s: S) -> Self {
         Self {
+            read_bits: 0usize.into(),
             bitstream: Bitstream::new(s),
             loc: Frac::zero(),
             bit_weight: Frac::inverse(BigUint::from(2usize)),
             stream_end: false,
         }
+    }
+    fn round(&mut self) {
+        self.loc
+            .round_down_nearest(&Frac::from_usize(1, usize::MAX));
     }
     //Reads a bit from the bitstream and updates the location accordingly
     fn update_loc(&mut self) {

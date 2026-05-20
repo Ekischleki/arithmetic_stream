@@ -164,4 +164,85 @@ impl Frac {
         self.denominator /= &gcd;
         self.numerator /= &gcd;
     }
+    pub fn to_int(&self) -> BigUint {
+        let ratio = &self.numerator / &self.denominator;
+        let a = &ratio * &self.denominator;
+        let b = (&ratio + 1usize) * &self.denominator;
+
+        let dif_a = if &a > &self.numerator {
+            a - &self.numerator
+        } else {
+            &self.numerator - a
+        };
+        let dif_b = if &b > &self.numerator {
+            b - &self.numerator
+        } else {
+            &self.numerator - b
+        };
+
+        if &dif_a >= &dif_b {
+            return ratio + 1usize;
+        } else {
+            return ratio;
+        }
+    }
+
+    pub fn round_down_nearest(&self, factor: &Self) -> Self {
+        let r = self / factor;
+        let rounded = r.numerator() / r.denominator();
+        return Self {
+            numerator: &factor.numerator * rounded,
+            denominator: factor.denominator.clone(),
+        };
+    }
+
+    pub fn round_up_nearest(&self, factor: &Self) -> Self {
+        let r = self / factor;
+        let mut rounded = r.numerator() / r.denominator();
+        if &rounded * r.denominator() < r.numerator {
+            rounded += 1usize;
+        }
+        return Self {
+            numerator: &factor.numerator * rounded,
+            denominator: factor.denominator.clone(),
+        };
+    }
+
+    pub fn round_nearest(&self, factor: &Self) -> Self {
+        let r = self / factor;
+        let rounded = r.to_int();
+        return Self {
+            numerator: &factor.numerator * rounded,
+            denominator: factor.denominator.clone(),
+        };
+    }
+
+    pub fn numerator(&self) -> &BigUint {
+        &self.numerator
+    }
+
+    pub fn denominator(&self) -> &BigUint {
+        &self.denominator
+    }
+}
+
+#[test]
+fn test_rounding() {
+    let a = Frac::from_usize(1, 2);
+    assert_eq!(a.to_int(), 1usize.into());
+
+    let a = Frac::from_usize(2, 3);
+    assert_eq!(a.to_int(), 1usize.into());
+
+    let a = Frac::from_usize(3, 3);
+    assert_eq!(a.to_int(), 1usize.into());
+    let a = Frac::from_usize(4, 3);
+    assert_eq!(a.to_int(), 1usize.into());
+    let a = Frac::from_usize(5, 3);
+    assert_eq!(a.to_int(), 2usize.into());
+
+    assert_eq!(
+        BigUint::from(4usize) / &BigUint::from(5usize),
+        0usize.into()
+    );
 }
